@@ -1,12 +1,11 @@
 import os
 import time
+
+from dotenv import load_dotenv
 import ptbot
 from pytimeparse import parse
-import time
-from dotenv import load_dotenv
+
 load_dotenv()
-
-
 TG_TOKEN = os.getenv('TELEGRAM_TOKEN')
 bot = ptbot.Bot(TG_TOKEN)
 
