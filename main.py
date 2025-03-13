@@ -1,14 +1,12 @@
 import os
 import time
 
-from dotenv import load_dotenv
+from decouple import config
 import ptbot
 from pytimeparse import parse
 
-load_dotenv()
 
-TG_TOKEN = os.getenv('TELEGRAM_TOKEN')
-bot = ptbot.Bot(TG_TOKEN)
+TG_TOKEN = config('TELEGRAM_TOKEN')
 
 
 def render_progressbar(total, iteration, prefix='', suffix='', length=30, fill='█', zfill='░'):
@@ -20,7 +18,7 @@ def render_progressbar(total, iteration, prefix='', suffix='', length=30, fill='
     return '{0} |{1}| {2}% {3}'.format(prefix, pbar, percent, suffix)
 
 
-def create_timer(chat_id, message):
+def create_timer(chat_id, message, bot):
     message_id = bot.send_message(chat_id, 'Запускаю таймер...')
     time.sleep(1)
     total = parse(message)
@@ -29,11 +27,12 @@ def create_timer(chat_id, message):
         notify_progress,
         chat_id=chat_id,
         message_id=message_id,
-        total=total
+        total=total,
+        bot = bot
     )
 
 
-def notify_progress(secs_left, chat_id, message_id, total):
+def notify_progress(secs_left, chat_id, message_id, total, bot):
     bot.update_message(
         chat_id,
         message_id,
@@ -44,7 +43,8 @@ def notify_progress(secs_left, chat_id, message_id, total):
 
 
 def main():
-    bot.reply_on_message(create_timer)
+    bot = ptbot.Bot(TG_TOKEN)
+    bot.reply_on_message(create_timer, bot=bot)
     bot.run_bot()
 
 
