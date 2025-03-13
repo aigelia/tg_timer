@@ -23,7 +23,7 @@ def create_timer(chat_id, message, bot):
     time.sleep(1)
     total = parse(message)
     bot.create_countdown(
-        parse(message),
+        total,
         notify_progress,
         chat_id=chat_id,
         message_id=message_id,
