@@ -28,7 +28,7 @@ def create_timer(chat_id, message, bot):
         chat_id=chat_id,
         message_id=message_id,
         total=total,
-        bot = bot
+        bot=bot
     )
 
 
